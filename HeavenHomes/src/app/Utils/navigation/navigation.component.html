@@ -1,0 +1,100 @@
+<mat-toolbar color="primary" class="toolbar">
+  <mat-toolbar-row class="toolbar-row">
+    <button mat-icon-button class="example-icon"  (click)="drawer.toggle()" *ngIf="isLoggedIn"><mat-icon>menu</mat-icon></button>
+    <img
+        width="40"
+        alt="Hotel Logo"
+        src="./../../../assets/hotel icon white.png"
+      />
+    <span>Heaven Homes</span>
+  
+    <div class="spacer"></div>
+    <button mat-button class="example-icon" *ngIf="isLoggedIn" [matMenuTriggerFor]="menu" ><mat-icon>account_circle</mat-icon></button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>
+        <mat-icon>badge</mat-icon>
+        <span>ID{{id}}</span>
+      </button>
+      <button mat-menu-item disabled>
+        <mat-icon>perm_identity</mat-icon>
+        <span>{{username}}</span>
+      </button>
+    
+    </mat-menu>
+    <button mat-button class="example-icon" routerLink="login" *ngIf="isLoggedIn" (click)="logout()"><mat-icon>logout </mat-icon></button>
+  </mat-toolbar-row>
+  
+  
+  
+</mat-toolbar>
+
+<!-- https://stackblitz.com/edit/sidenav  side nav animation link -->
+
+<mat-sidenav-container class="sidenav-container"  >
+ 
+  <mat-sidenav #drawer  class="sidenav" mode="side" >     
+    <!-- <mat-toolbar>Menu</mat-toolbar> -->
+    <mat-nav-list class="nave-list">
+      <div class="profile-card">
+        <div class="header">
+            <h2>{{id}}</h2>
+            <h4>{{username}}</h4>
+        </div>
+        <img src="../../../assets/Images/PngItem_1468479.png" alt="Soufiane FADIL">
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <h2 matSubheader>Pages</h2>
+      <!-- *ngIf="showdashBoard" -->
+      <mat-list-item  routerLink="dashboard" *ngIf="showdashboard"  > 
+        <mat-icon mat-list-icon>dashboard</mat-icon>
+        <h4 mat-line >Dash Board</h4>
+      </mat-list-item>
+      <mat-list-item routerLink="employee" *ngIf="showEmpTab">
+        <mat-icon mat-list-icon>groups</mat-icon>
+        <h4 mat-line >Employee Management</h4>
+      </mat-list-item>
+
+      <mat-list-item routerLink="guest">
+        <mat-icon mat-list-icon>person</mat-icon>
+        <h4 mat-line >Guest Management</h4>
+      </mat-list-item>
+
+      <mat-list-item routerLink="inventory" *ngIf="showInvTab">
+        <mat-icon mat-list-icon>dns</mat-icon>
+        <h4 mat-line >Inventory Management</h4>
+      </mat-list-item>
+
+      <mat-list-item routerLink="room">
+        <mat-icon mat-list-icon>room_preferences</mat-icon>
+        <h4 mat-line >Room Management</h4>
+      </mat-list-item>
+
+      <mat-list-item routerLink="bookings">
+        <mat-icon mat-list-icon>book</mat-icon>
+        <h4 mat-line >Bookings Management</h4>
+      </mat-list-item>
+
+
+      <!-- <mat-selection-list #shoes [multiple]="false">
+        <mat-list-option *ngFor="let shoe of typesOfShoes" [value]="shoe">
+          {{shoe}}
+        </mat-list-option>
+      </mat-selection-list>
+      
+      <p>
+        Option selected: {{shoes.selectedOptions.selected[0]?.value}}
+      </p> -->
+
+
+      
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+
+    <router-outlet></router-outlet>
+
+  </mat-sidenav-content>
+
+</mat-sidenav-container>

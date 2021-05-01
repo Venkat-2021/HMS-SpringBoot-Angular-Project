@@ -1,0 +1,230 @@
+<mat-tab-group mat-stretch-tabs>
+    <mat-tab label="Add Room">
+      <form [formGroup]="addRoomForm" novalidate (ngSubmit)="onSubmit()" >
+        <mat-card class="room-card">
+          <mat-card-header>
+            <mat-card-title>ADD ROOM </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="row">
+                <div class="col">
+                    <mat-form-field class="full-width" appearance="outline">
+                      <mat-label>Room Number</mat-label>
+                      <input matInput placeholder="Room ID" formControlName="id" >
+                      <mat-error *ngIf="addRoomForm.controls['id'].hasError('required')">
+                        Room ID is <strong>required</strong>
+                      </mat-error>
+                      <mat-icon matSuffix>meeting_room</mat-icon>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                  <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>Room Name</mat-label>
+                    <mat-select placeholder="Room Name" formControlName="roomName">
+                      <mat-option *ngFor="let room of rooms" [value]="room">
+                        {{ room }}
+                      </mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="addRoomForm.controls['roomName'].hasError('required')">
+                        Room Name is <strong>required</strong>
+                      </mat-error>
+                  </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                
+                <div class="col">
+                  <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>Bed Type</mat-label>
+                    <mat-select placeholder="Bed Type" formControlName="bedType" >
+                      <mat-option *ngFor="let bed of beds" [value]="bed">
+                        {{ bed }}
+                      </mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="addRoomForm.controls['bedType'].hasError('required')">
+                        Bed Type is <strong>required</strong>
+                      </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col">
+                  <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>Price Per Night</mat-label>
+                    <input matInput  placeholder="Price Per Night" formControlName="price"   >
+                    <mat-error *ngIf="addRoomForm.controls['price'].hasError('required')">
+                      Price is <strong>required</strong>
+                    </mat-error>
+                    <mat-icon matSuffix>sell</mat-icon>
+                  </mat-form-field>
+                </div>
+                
+              </div>
+              <div class="row">
+                <div class="col">
+                  <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>Description</mat-label>
+                    <input matInput placeholder="Description" >
+                    <mat-icon matSuffix>description</mat-icon>
+                  </mat-form-field>
+                </div>
+                <div class="col">
+                  <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>Status</mat-label>
+                      <mat-select placeholder="status" formControlName="status" >
+                        <mat-option *ngFor="let stat of status" [value]="stat" >
+                          {{ stat }}
+                        </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="addRoomForm.controls['status'].hasError('required')">
+                          Status is <strong>required</strong>
+                        </mat-error>
+                  </mat-form-field>
+                </div>
+            </div>
+
+          </mat-card-content>
+          <mat-card-actions align="end">
+            <button mat-raised-button color="primary"   type="submit">Add</button>
+          </mat-card-actions>
+        </mat-card>
+      </form>
+    </mat-tab>
+    <mat-tab label="All Rooms">
+      <mat-card class="room-card">
+        <mat-card-header>
+          <mat-card-title>SEARCH ROOMS </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="row">
+              <div class="col">
+                  <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>Room Number</mat-label>
+                    <input matInput placeholder="Room Number" (keyup)="applyFilter($event)" #input >
+                    <mat-icon matSuffix> search</mat-icon>
+                  </mat-form-field>
+              </div>
+          </div>
+          <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSource" matSort>
+          
+              <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Room Number </th>
+                <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="roomName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Room Name </th>
+                <td mat-cell *matCellDef="let row"> {{row.roomName}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="bedType">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Bed Type </th>
+                <td mat-cell *matCellDef="let row"> {{row.bedType}} </td>
+              </ng-container>
+          
+              <ng-container matColumnDef="price">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Price </th>
+                <td mat-cell *matCellDef="let row"> {{row.price}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+                <td mat-cell *matCellDef="let row"> {{row.description}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+                <td mat-cell *matCellDef="let row" [style.color]="row.status"> {{row.status}} </td>
+              </ng-container>
+              
+              <ng-container matColumnDef="delete">
+                <th mat-header-cell *matHeaderCellDef> Delete </th>
+                <td mat-cell *matCellDef="let row">
+                  <button mat-icon-button color="warn" (click)="Delete(row.id)">
+                      <mat-icon class="mat-18">delete</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+          
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+              </tr>
+            </table>
+          
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+          </div>
+
+
+
+        </mat-card-content>
+      </mat-card>
+
+
+    </mat-tab>
+    <mat-tab label="Bookings">
+      <mat-card class="room-card">
+        <mat-card-header>
+          <mat-card-title>SEARCH BOOKINGS </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <form #f='ngForm' name="form" (ngSubmit)="f.form.valid && onSearch()">
+            <div class="row">
+              <div class="col">
+                  <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>Room Number</mat-label>
+                    <input matInput placeholder="Room Number" name="id" [(ngModel)]="form.id" #title="ngModel" required >
+                    <mat-icon matSuffix>meeting_room</mat-icon>
+                  </mat-form-field>
+              </div>
+          </div>
+          <mat-card-actions align="end">
+            <button mat-raised-button color="primary" >Search</button>
+          </mat-card-actions>
+          </form>
+          
+          <div class="mat-elevation-z8" *ngIf="table">
+            <table mat-table [dataSource]="bookingdataSource" matSort>
+          
+              <ng-container matColumnDef="bookingId">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Booking ID </th>
+                <td mat-cell *matCellDef="let row"> {{row.bookingId}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="checkInDate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> checkInDate </th>
+                <td mat-cell *matCellDef="let row"> {{row.checkInDate}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="checkOutDate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> checkOutDate </th>
+                <td mat-cell *matCellDef="let row"> {{row.checkOutDate}} </td>
+              </ng-container>
+              
+              <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
+          
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+              </tr>
+            </table>
+          
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+          </div>
+
+        </mat-card-content>
+        
+      </mat-card>
+        
+      
+
+    </mat-tab>
+  </mat-tab-group>
+
+<!-- <p>room works!</p>
+
+<p>{{addRoomForm.value | json}}</p> -->
+
+<router-outlet></router-outlet>
+

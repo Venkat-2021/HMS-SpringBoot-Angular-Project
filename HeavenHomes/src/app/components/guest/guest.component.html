@@ -1,0 +1,83 @@
+<mat-tab-group mat-stretch-tabs >
+  <mat-tab label="View Guest"> 
+    <mat-card class="guest-card">
+      <mat-card-header>
+        <mat-card-title>SEARCH GUEST</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form #f='ngForm' name="formId" (ngSubmit)="onSearch()">
+          <div class="row">
+            <div class="col">
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label>Booking ID</mat-label>
+                  <input matInput placeholder="Booking Id" name="id" [(ngModel)]="formId.id" #title="ngModel" required  >
+                  <mat-icon matSuffix>inventory_2</mat-icon>
+                </mat-form-field>
+            </div>
+        </div>
+        <mat-card-actions align="end">
+          <button mat-raised-button color="primary">Search</button>
+        </mat-card-actions>
+        </form>
+        
+        <div class="mat-elevation-z8" *ngIf="table" >
+          <table mat-table [dataSource]="guestdataSource">
+        
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef> Guest ID </th>
+              <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="guestName">
+              <th mat-header-cell *matHeaderCellDef> GuestName </th>
+              <td mat-cell *matCellDef="let row"> {{row.guestName}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="gender">
+              <th mat-header-cell *matHeaderCellDef > Gender </th>
+              <td mat-cell *matCellDef="let row"> {{row.gender}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="designation">
+              <th mat-header-cell *matHeaderCellDef > Designation </th>
+              <td mat-cell *matCellDef="let row"> {{row.designation}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="mobile">
+              <th mat-header-cell *matHeaderCellDef > Mobile </th>
+              <td mat-cell *matCellDef="let row"> {{row.mobile}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef > Email </th>
+              <td mat-cell *matCellDef="let row"> {{row.email}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="address">
+              <th mat-header-cell *matHeaderCellDef > Address </th>
+              <td mat-cell *matCellDef="let row"> {{row.address}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="identityType">
+              <th mat-header-cell *matHeaderCellDef > Identity Type </th>
+              <td mat-cell *matCellDef="let row"> {{row.identityType}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="identityNumber">
+              <th mat-header-cell *matHeaderCellDef > Identity Number </th>
+              <td mat-cell *matCellDef="let row"> {{row.identityNumber}} </td>
+            </ng-container>
+            
+            <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
+        
+          </table>
+
+        </div>
+
+      </mat-card-content>
+      
+    </mat-card>
+</mat-tab>
+  </mat-tab-group>
+<!-- <p>guest works!</p> -->

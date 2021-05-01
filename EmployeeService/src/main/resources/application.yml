@@ -1,0 +1,18 @@
+server:
+  port: 8082
+  
+spring:  data:    mongodb:      uri: mongodb://localhost:27017/HMS-EMPLOYEES-DB
+            auto-index-creation: true
+      
+  application:
+    name: EMPLOYEE-SERVICE
+      
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost    

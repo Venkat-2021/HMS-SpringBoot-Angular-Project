@@ -1,0 +1,349 @@
+<mat-tab-group mat-stretch-tabs >
+                                                <!-- PRODUCT MAT TAB ADD PRODUCT FORM -->
+    <mat-tab label="Add Product"> 
+        <form [formGroup]="addProductForm" validate (ngSubmit)="onSubmit()">
+            <mat-card class="product-card">
+              <mat-card-header>
+                <mat-card-title >ADD PRODUCT</mat-card-title>
+              </mat-card-header>
+             <mat-card-content>
+                <div class="row">
+                  <div class="col">
+                    <mat-form-field class="full-width" appearance="outline">
+                      <mat-label>Product Name</mat-label>
+                      <input matInput placeholder="Product Name"   formControlName="productName">
+                      <mat-error *ngIf="addProductForm.controls['productName'].hasError('required')">
+                        Product Name is <strong>required</strong>
+                      </mat-error>
+                      <mat-icon matSuffix>dry_cleaning</mat-icon>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <mat-form-field class="full-width" appearance="outline">
+                      <mat-label>Quantity</mat-label>
+                      <input matInput type="number" placeholder="Quantity" formControlName="quantity" >
+                      <mat-error *ngIf="addProductForm.controls['quantity'].hasError('required')">
+                        Product Quantity is <strong>required</strong>
+                      </mat-error>
+                      <mat-icon matSuffix>add_shopping_cart</mat-icon>
+                    </mat-form-field>
+                  </div>
+                  <div class="col">
+                    <mat-form-field class="full-width" appearance="outline">
+                      <mat-label>Price Per Unit</mat-label>
+                      <input matInput type="" placeholder="Price Per Unit" formControlName="pricePerUnit" >
+                      <mat-error *ngIf="addProductForm.controls['pricePerUnit'].hasError('required')">
+                        Product Price is <strong>required</strong>
+                      </mat-error>
+                      <mat-icon matSuffix>sell</mat-icon>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div formArrayName="order"  >
+                  <div formGroupName="0">
+                    <div class="row">
+                      <div class="col">
+                        <mat-form-field class="full-width" appearance="outline">
+                          <mat-label>Supplier Name</mat-label>
+                          <input matInput placeholder="Supplier" formControlName="supplier" >
+                          <mat-icon matSuffix>store</mat-icon>
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <mat-form-field class="full-width" appearance="outline">
+                          <mat-label>Order Date</mat-label>
+                          <input matInput type="datetime-local" placeholder="Order Date" formControlName="dateOfIssue" >
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <mat-form-field class="full-width" appearance="outline">
+                          <mat-label>Employee ID</mat-label>
+                          <input matInput placeholder="Employee Id" formControlName="employeeId">
+                          <mat-icon matSuffix> badge</mat-icon>
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <mat-form-field class="full-width" appearance="outline">
+                          <mat-label>Employee Name</mat-label>
+                          <input matInput placeholder="Employee Name" formControlName="employeeName" >
+                          <mat-icon matSuffix>account_circle</mat-icon>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row" *ngIf="hide" >
+                      <div class="col">
+                        <mat-form-field class="full-width" appearance="outline">
+                          
+                          <input matInput placeholder="Employee Id" formControlName="quantityRemoved" value="0">
+                          
+                        </mat-form-field>
+                      </div>
+                      <div class="col">
+                        <mat-form-field class="full-width" appearance="outline">
+                          
+                          <input matInput placeholder="Employee Name" formControlName="quantityAdded">
+                          
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                  </div>
+                  
+                  
+                </div>
+                  
+              </mat-card-content>
+              <mat-card-actions  align="end">
+                <button mat-raised-button color="primary" type="submit">Submit</button>
+              </mat-card-actions>
+            </mat-card>
+          </form>
+    </mat-tab>
+                                                    <!-- PRODUCT MAT TAB  COMPLETED  -->
+    <mat-tab label=" All Products" >
+      <mat-card class="product-card">
+        <mat-card-header>
+          <mat-card-title>SEARCH PRODUCT </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="row">
+              <div class="col">
+                  <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>Search with any Field</mat-label>
+                    <input matInput placeholder="Ex:ProductId,ProductName" (keyup)="applyFilter($event)" #input >
+                    <mat-icon matSuffix> search</mat-icon>
+                  </mat-form-field>
+              </div>
+          </div>
+
+          <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSource" matSort>
+          
+              <ng-container matColumnDef="productId">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Product ID </th>
+                <td mat-cell *matCellDef="let row"> {{row.productId}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="productName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Product Name </th>
+                <td mat-cell *matCellDef="let row"> {{row.productName}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="quantity">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Quantity </th>
+                <td mat-cell *matCellDef="let row"> {{row.quantity}} </td>
+              </ng-container>
+          
+              <ng-container matColumnDef="pricePerUnit">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Price Per Unit </th>
+                <td mat-cell *matCellDef="let row"> {{row.pricePerUnit}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="totalAmount">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount </th>
+                <td mat-cell *matCellDef="let row"> {{row.totalAmount}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="modifiedAt">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Modified </th>
+                <td mat-cell *matCellDef="let row"> {{row.modifiedAt}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="delete">
+                <th mat-header-cell *matHeaderCellDef> Delete </th>
+                <td mat-cell *matCellDef="let row">
+                  <button mat-icon-button color="warn" (click)="Delete(row.productId)">
+                      <mat-icon class="mat-18">delete</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+          
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+              </tr>
+            </table>
+          
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+          </div>
+
+        </mat-card-content>  
+      </mat-card>    
+
+    </mat-tab>
+    <mat-tab label="Add Order">
+      <form #f='ngForm' name="form" (ngSubmit)="f.form.valid && submitOrder()">
+        <mat-card class="product-card">
+          <mat-card-header>
+            <mat-card-title>ADD ORDER TO PRODUCT </mat-card-title>
+            <mat-card-subtitle> Add or Remove existing product </mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="row">
+                <div class="col">
+                    <mat-form-field class="full-width" appearance="outline">
+                      <mat-label>Product ID</mat-label>
+                      <input matInput placeholder="Product Id"  name="eid" #eid="ngModel"  [(ngModel)]="productId" required >
+                      <mat-icon matSuffix>inventory_2</mat-icon>
+                    </mat-form-field>
+                  </div>
+                <div class="col">
+                  <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>Order ID</mat-label>
+                    <input matInput placeholder="Order Id"  name="orderId" [(ngModel)]="form.orderId" #title="ngModel" required  >
+                    <mat-icon matSuffix>inventory_2</mat-icon>
+                  </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                
+                <div class="col">
+                  <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>Quantity Added</mat-label>
+                    <input matInput type="number" placeholder="Quantity Added"  name="quantityAdded" [(ngModel)]="form.quantityAdded" #title="ngModel" required  >
+                    <mat-icon matSuffix>add_shopping_cart</mat-icon>
+                  </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field class="full-width" appearance="outline">
+                      <mat-label>Quantity Removed</mat-label>
+                      <input matInput type="number" placeholder="Quantity Removed" name="quantityRemoved" [(ngModel)]="form.quantityRemoved" #title="ngModel" required  >
+                      <mat-icon matSuffix>remove_shopping_cart</mat-icon>
+                    </mat-form-field>
+                  </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>Supplier Name</mat-label>
+                    <input matInput placeholder="supplier Name" name="supplier" [(ngModel)]="form.supplier" #title="ngModel" required  >
+                    <mat-icon matSuffix>store</mat-icon>
+                  </mat-form-field>
+                </div>
+                <div class="col">
+                  <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>Room Number</mat-label>
+                    <input matInput placeholder="Room No"  name="roomNo" [(ngModel)]="form.roomNo" #title="ngModel" required >
+                    <mat-icon matSuffix>meeting_room</mat-icon>
+                  </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label>Employee ID</mat-label>
+                  <input matInput placeholder=" Employee ID"  name="employeeId" [(ngModel)]="form.employeeId" #title="ngModel" required >
+                  <mat-icon matSuffix> badge</mat-icon>
+                </mat-form-field>
+              </div>
+              <div class="col">
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label>Employee Name</mat-label>
+                  <input matInput placeholder="Employee Name"  name="employeeName" [(ngModel)]="form.employeeName" #title="ngModel" required >
+                  <mat-icon matSuffix>account_circle</mat-icon>
+                </mat-form-field>
+              </div>
+          </div>
+
+          </mat-card-content>
+          <mat-card-actions align="end">
+            <button mat-raised-button color="primary" >Submit</button>
+          </mat-card-actions>
+        </mat-card>
+      </form>
+    
+    
+    </mat-tab>
+
+    <mat-tab label=" All Orders" >
+      <mat-card class="product-card">
+        <mat-card-header>
+          <mat-card-title>SEARCH PRODUCT ORDERS  </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <form #f='ngForm' name="formId" (ngSubmit)="onSearch()">
+            <div class="row">
+              <div class="col">
+                  <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>Product ID</mat-label>
+                    <input matInput placeholder="Product Id" name="id" [(ngModel)]="formId.id" #title="ngModel" required >
+                    <mat-icon matSuffix>inventory_2</mat-icon>
+                  </mat-form-field>
+              </div>
+          </div>
+          <mat-card-actions align="end">
+            <button mat-raised-button color="primary">Search</button>
+          </mat-card-actions>
+          </form>
+          
+          <div class="mat-elevation-z8" *ngIf="table" id="ordertable">
+            <table mat-table [dataSource]="orderdataSource" matSort>
+          
+              <ng-container matColumnDef="orderId">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Order ID </th>
+                <td mat-cell *matCellDef="let row"> {{row.orderId}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="quantityRemoved">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Quantity Removed </th>
+                <td mat-cell *matCellDef="let row"> {{row.quantityRemoved}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="quantityAdded">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Quantity Added </th>
+                <td mat-cell *matCellDef="let row"> {{row.quantityAdded}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="dateOfIssue">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Date of Issue </th>
+                <td mat-cell *matCellDef="let row"> {{row.dateOfIssue}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="supplier">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Supplier </th>
+                <td mat-cell *matCellDef="let row"> {{row.supplier}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="employeeId">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Employee ID </th>
+                <td mat-cell *matCellDef="let row"> {{row.employeeId}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="employeeName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Employee Name </th>
+                <td mat-cell *matCellDef="let row"> {{row.employeeName}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="roomNo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Room No </th>
+                <td mat-cell *matCellDef="let row"> {{row.roomNo}} </td>
+              </ng-container>
+              
+              <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
+          
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+              </tr>
+            </table>
+          
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+          </div>
+
+        </mat-card-content>
+        
+      </mat-card>
+
+      
+    </mat-tab>
+  </mat-tab-group>
+<!-- <p>inventory works!</p>
+<p>{{addProductForm.value | json}}</p> -->
+
+<router-outlet></router-outlet>
