@@ -1,0 +1,33 @@
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost    
+
+  
+spring:       
+  application:
+    name: HMSGateWay
+server:
+  port: 8079
+  
+zuul:
+  #Service will be mapped under the /api URI
+  routes:
+    Employee-service:
+      path: /employees/**
+      url: lb:EMPLOYEE-SERVICE
+      
+    Rooms-service:
+      path: /room/**
+      url: lb:ROOMS-SERVICE  
+      
+    Inventory-service:
+      url: lb:INVENTORY-SERVICE
+      
+    Booking-service:
+      url: lb:BOOKINGS-SERVICE
